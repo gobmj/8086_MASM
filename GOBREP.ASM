@@ -13,32 +13,32 @@ code segment
 	mov ax,data
 	mov ds,ax
 
-	mov ah,09H ; 		Display Msg1
+	mov ah,09H 
 	lea dx,msg1
 	int 21H
 	mov si,offset str1
 	call input
 
-	mov ah,09H ; 		Display Msg2
+	mov ah,09H 
 	lea dx,msg2
 	int 21H
 	mov ah,01H
 	int 21H
 	mov substr,al
 	
-	mov ah,09H ; 		Display Msg3
+	mov ah,09H 
 	lea dx,msg3
 	int 21H
 	mov ah,01H
 	int 21H
 	mov newstr,al
 	
-	mov ah,09H ; 		Display Msg4
+	mov ah,09H 
 	lea dx,msg4
 	int 21H
 
 
-				;Replace String
+				
 	mov si,offset str1+2
 	mov cl,str1+1
 	mov al,newstr	
@@ -52,7 +52,7 @@ code segment
 	mov si,offset str1+2
 	call output
 
-	mov ah,4CH 		;End pgm
+	mov ah,4CH 		
 	int 21H
 	
 	input proc near
