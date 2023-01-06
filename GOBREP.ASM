@@ -1,89 +1,71 @@
 data segment
-    str1 db 20 dup("$")
-    str2 db 20 dup("$")
-    str3 db 20 dup("$")
-    msg1 db 10,13,"Enter First String: $"
-    msg2 db 10,13,"Enter character to be Changed: $"
-    msg3 db 10,13,"Enter the replacement Character: $"
-    msg4 db 10,13,"The Replaced String: $"
+	str1 db 20 dup('$')
+	substr db ?
+	newstr db ?
+	msg1 db 10,13,"Enter First String: $"
+	msg2 db 10,13,"Enter Character To Replace: $"
+	msg3 db 10,13,"Enter Character To Be Replaced With: $"
+	msg4 db 10,13,"The String is: $"
 data ends
+code segment
+	assume cs:code,ds:data
+	start:
+	mov ax,data
+	mov ds,ax
 
-assume cs:code,ds:data
+	mov ah,09H ; 		Display Msg1
+	lea dx,msg1
+	int 21H
+	mov si,offset str1
+	call input
 
-code segment 
-start:
-
-    MOV dx,data
-    MOV ds,dx
-
-    LEA dx,msg1
-    MOV ah,09H
-    INT 21H
-
-    LEA si,STR1
-    LOOP1: MOV ah,01h
-    INT 21H
-    CMP al,13
-    JE SKIP
-    MOV [si],al
-    INC si
-    JMP LOOP1
-
-    SKIP: MOV ah,09H
-    LEA dx,msg2
-    INT 21H
-
-    LEA si,STR2
-    LOOP2: mov ah,01h
-    INT 21H
-    CMP al,13
-    JE SKIP1
-    MOV [si],al
-    INC si
-    JMP LOOP2
-
-	SKIP1: MOV ah,09H
-    LEA dx,msg3
-    INT 21H
+	mov ah,09H ; 		Display Msg2
+	lea dx,msg2
+	int 21H
+	mov ah,01H
+	int 21H
+	mov substr,al
 	
-	LEA si,STR3
-    LOOP3: mov ah,01h
-    INT 21H
-    CMP al,13
-    JE SKIP3
-    MOV [si],al
-    INC si
-    JMP LOOP3
+	mov ah,09H ; 		Display Msg3
+	lea dx,msg3
+	int 21H
+	mov ah,01H
+	int 21H
+	mov newstr,al
 	
-    SKIP3:CALL replace
+	mov ah,09H ; 		Display Msg4
+	lea dx,msg4
+	int 21H
 
-    MOV ah,4ch
-    INT 21H
 
-replace proc near
+				;Replace String
+	mov si,offset str1+2
+	mov cl,str1+1
+	mov al,newstr	
+	next:mov ah,[si]
+	cmp ah,substr
+	jne skip
+	mov [si],al
+	skip:inc si
+	dec cl
+	jnz next
+	mov si,offset str1+2
+	call output
 
-    LEA si,str1
-    MOV cl,str2
-    MOV ch,str3
-    MOV al,'$'
-
-    LOOP4: CMP cl,[si]
-    	JZ EXIT
-        JE SKIP4
-        INC si
-        SKIP4: MOV [si],ch
-        INC si
-        JMP LOOP4
- 	 
-    EXIT:MOV [si],al
-    LEA dx,msg4
-    MOV ah,09H
-    INT 21H
-    LEA dx,str1
-    MOV ah,09H
-    INT 21H
-    RET
-   replace endp
-
+	mov ah,4CH 		;End pgm
+	int 21H
+	
+	input proc near
+		mov ah,0AH
+		mov dx,si
+		int 21H
+		ret	
+	input endp
+	output proc near
+		mov ah,09H
+		mov dx,si
+		int 21H
+		ret	
+	output endp 
 code ends
 end start
