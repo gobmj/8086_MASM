@@ -60,7 +60,7 @@ output proc near
 	MOV cl,04H
 	ROL ah,cl
 	ADD ah,30H
-	CMP ah,39H;changed...
+	CMP ah,39H;
 	JLE skip4
 	ADD ah,07H
 	skip4:mov dl,ah
@@ -68,9 +68,9 @@ output proc near
 	INT 21H
 
 	MOV ax,[si]
-	AND ah,0fH;testing...
+	AND ah,0fH;
 	ADD ah,30H
-	CMP ah,39H;changed...
+	CMP ah,39H;
 	JLE skip5
 	ADD ah,07H
 	skip5: mov dl,ah
