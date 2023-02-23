@@ -1,3 +1,5 @@
+;Not Working
+
 data segment
     msg1 db 10,13,"Enter the first number:$"
     msg2 db 10,13,"Enter the second number:$"
