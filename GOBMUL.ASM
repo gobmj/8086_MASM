@@ -60,7 +60,7 @@ output proc near
 	MOV cl,04H
 	ROL ah,cl
 	ADD ah,30H
-	CMP ah,39H;
+	CMP ah,39H
 	JLE skip4
 	ADD ah,07H
 	skip4:mov dl,ah
